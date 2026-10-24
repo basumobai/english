@@ -31,9 +31,10 @@ if state['user']['must_change_password']:
     api('/auth/password', {'current_password': os.environ['ELS_ADMIN_PASSWORD'], 'new_password': os.environ['ELS_ADMIN_PASSWORD'] + '-changed'})
     api('/auth/login', {'username': os.environ.get('ELS_ADMIN_USERNAME', 'admin'), 'password': os.environ['ELS_ADMIN_PASSWORD'] + '-changed', 'code': ''})
     csrf = api('/auth/me')['csrf_token']
-spellings = {'适应': 'adapt', '采用': 'adopt', '维持': 'maintain', '后果': 'consequence', '必要的': 'necessary'}
+spellings = {'反馈意见': 'feedback', '时态': 'tense'}
+scope = {'book_id': 's1', 'unit': 1, 'lesson': 'Lesson 2', 'starred': True}
 meanings = {value: key for key, value in spellings.items()}
-created = api('/study/sessions', {'types': ['spelling'], 'limit': 2, 'new_limit': 2}, 201)
+created = api('/study/sessions', {'types': ['spelling'], 'limit': 2, 'new_limit': 2, **scope}, 201)
 sid = created['id']
 path = f'/study/sessions/{sid}'
 session = api(path)
@@ -61,7 +62,7 @@ api(path + '/answers', {'question_id': q['id'], 'request_id': rid(), 'answer': s
 api(path + '/review', {'question_id': q['id'], 'request_id': rid(), 'rating': 3}, 400)
 api(path + '/review', {'question_id': q['id'], 'request_id': rid(), 'rating': 1})
 for kind in ['recognition', 'meaning_recall']:
-    sid = api('/study/sessions', {'mode': 'practice', 'types': [kind], 'limit': 1}, 201)['id']
+    sid = api('/study/sessions', {'mode': 'practice', 'types': [kind], 'limit': 1, **scope}, 201)['id']
     path = f'/study/sessions/{sid}'
     q = api(path)['questions'][0]
     grade = api(path + '/answers', {'question_id': q['id'], 'request_id': rid(), 'answer': meanings[q['prompt']], 'response_time_ms': 900, 'used_hint': False})

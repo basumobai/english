@@ -183,8 +183,8 @@ export default function Practice() {
   }, [auth.allowed]);
   const types = catalog?.subjects.find((s) => s.id === subject)?.types || [];
   useEffect(() => {
-    if (types.length && !types.some((t) => t.id === kind)) setKind(types[0].id);
-  }, [types, kind]);
+    if (types.length) setKind(current => types.some(t => t.id === current) ? current : types[0].id);
+  }, [types]);
   useEffect(() => {
     setChapters([]);
     setTextbook("");

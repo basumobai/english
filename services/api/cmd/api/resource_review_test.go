@@ -120,10 +120,7 @@ func TestReviewedIndependentQuestionAndAttemptSnapshots(t *testing.T) {
 	if string(empty["resources"]) != "[]" || string(empty["total"]) != "1" {
 		t.Fatal("published pagination lost total", empty)
 	}
-	other := student.call("GET", "/api/v1/resources/library?subject=physics", nil, 200)
-	if string(other["total"]) != "0" {
-		t.Fatal("published subject filter leaked scope", other)
-	}
+	student.call("GET", "/api/v1/resources/library?subject=physics", nil, 400)
 	if _, err := s.db.Exec(`UPDATE learning_question_revisions SET content='{}'`); err == nil {
 		t.Fatal("question snapshots mutable")
 	}

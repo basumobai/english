@@ -531,6 +531,18 @@
   },
   {
     "book_id": "s3",
+    "word": "abuse",
+    "before": {
+      "phonetic": "/əˈbjuːz/",
+      "chinese": "滥用，妄用；虐待. /əˈbjuːs/ 滥用；虐待"
+    },
+    "after": {
+      "phonetic": "/əˈbjuːz/; /əˈbjuːs/",
+      "chinese": "滥用，妄用；虐待"
+    }
+  },
+  {
+    "book_id": "s3",
     "word": "junk food",
     "before": {
       "source_page": 114

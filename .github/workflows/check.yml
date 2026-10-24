@@ -6,13 +6,14 @@ permissions:
   contents: read
 jobs:
   installer:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - run: python3 scripts/check_textbooks.py
       - run: bash scripts/test-install.sh
   api:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     services:
       postgres:
         image: postgres:17-alpine
@@ -43,7 +44,7 @@ jobs:
       - run: go vet ./... && go build ./cmd/api
         working-directory: services/api
   web:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -83,7 +84,7 @@ jobs:
       ELS_ADMIN_USERNAME: admin
       ELS_ADMIN_PASSWORD: els-ci-disposable-password-only
       APP_ENCRYPTION_KEY: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
