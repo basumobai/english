@@ -1,0 +1,112 @@
+name: check
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  installer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check_textbooks.py
+      - run: bash scripts/test-install.sh
+  api:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: els_test
+          POSTGRES_USER: els
+          POSTGRES_PASSWORD: els_ci_only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U els -d els_test"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: services/api/go.mod
+          cache-dependency-path: services/api/go.sum
+      - run: go mod download && go mod verify
+        working-directory: services/api
+      - run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - name: Unit, migration and concurrent database integration tests
+        run: go test -race -count=1 -v ./...
+        working-directory: services/api
+        env:
+          TEST_DATABASE_URL: postgres://els:els_ci_only@127.0.0.1:5432/els_test?sslmode=disable
+      - run: python3 -m unittest discover -s services/codex-runner -p 'test_*.py' -v
+      - run: go vet ./... && go build ./cmd/api
+        working-directory: services/api
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci
+        working-directory: apps/web
+      - run: npm test && npm run build
+        working-directory: apps/web
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+      - run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - name: Browser checks of English flows (mock API)
+        working-directory: apps/web
+        run: |
+          npm start -- --port 3007 >/tmp/learning-web.log 2>&1 &
+          WEB_PID=$!
+          trap 'kill "$WEB_PID" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 40); do
+            if curl --silent --fail http://127.0.0.1:3007 >/dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:ui
+      - name: Preserve responsive UI previews
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: english-ui-previews
+          path: docs/previews/*.png
+          retention-days: 7
+          if-no-files-found: ignore
+  integration:
+    env:
+      ELS_ADMIN_USERNAME: admin
+      ELS_ADMIN_PASSWORD: els-ci-disposable-password-only
+      APP_ENCRYPTION_KEY: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start complete development stack
+        run: docker compose up --build -d
+      - name: Wait for API and web readiness
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=0
+          for attempt in $(seq 1 60); do
+            if curl --silent --fail http://127.0.0.1:8080/api/v1/health >/dev/null \
+              && curl --silent --fail http://127.0.0.1:3000/ >/dev/null; then
+              ready=1
+              break
+            fi
+            sleep 3
+          done
+          test "$ready" -eq 1
+      - run: python3 scripts/smoke.py
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs --no-color
+      - name: Stop disposable CI stack
+        if: always()
+        run: docker compose down -v

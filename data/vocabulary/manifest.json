@@ -1,0 +1,370 @@
+{
+  "edition": "北师大版2019",
+  "books": [
+    {
+      "id": "c1",
+      "title": "必修第一册",
+      "entries": 359,
+      "starred": 13,
+      "secondary_only": 0,
+      "sha256": "312fb062ade40616f515b5419eb594b34caac893bc88459288bd0e71e4dcd33d",
+      "units": [
+        {
+          "unit": 1,
+          "title": "Life Choices",
+          "entries": 139,
+          "lessons": {
+            "Topic Talk": 25,
+            "Lesson 1": 39,
+            "Lesson 2": 25,
+            "Lesson 3": 34,
+            "Writing Workshop": 12,
+            "Reading Club 1": 1,
+            "Reading Club 2": 3
+          }
+        },
+        {
+          "unit": 2,
+          "title": "Sports and Fitness",
+          "entries": 118,
+          "lessons": {
+            "Topic Talk": 20,
+            "Lesson 1": 27,
+            "Lesson 2": 22,
+            "Lesson 3": 37,
+            "Writing Workshop": 10,
+            "Reading Club 1": 1,
+            "Reading Club 2": 1
+          }
+        },
+        {
+          "unit": 3,
+          "title": "Celebrations",
+          "entries": 102,
+          "lessons": {
+            "Topic Talk": 14,
+            "Lesson 2": 18,
+            "Lesson 1": 30,
+            "Lesson 3": 26,
+            "Writing Workshop": 11,
+            "Reading Club 1": 1,
+            "Reading Club 2": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "title": "必修第二册",
+      "entries": 310,
+      "starred": 21,
+      "secondary_only": 2,
+      "sha256": "05e70bbc2d6ddd409412ef0987f9f54f191ac06c3f519d0c1995329630a903ed",
+      "units": [
+        {
+          "unit": 4,
+          "title": "Information Technology",
+          "entries": 103,
+          "lessons": {
+            "Topic Talk": 17,
+            "Lesson 1": 23,
+            "Lesson 2": 22,
+            "Lesson 3": 27,
+            "Writing Workshop": 10,
+            "Reading Club 1": 3,
+            "Reading Club 2": 1
+          }
+        },
+        {
+          "unit": 5,
+          "title": "Humans and Nature",
+          "entries": 108,
+          "lessons": {
+            "Topic Talk": 32,
+            "Lesson 1": 21,
+            "Lesson 2": 24,
+            "Lesson 3": 20,
+            "Writing Workshop": 5,
+            "Reading Club 1": 4,
+            "Reading Club 2": 2
+          }
+        },
+        {
+          "unit": 6,
+          "title": "The Admirable",
+          "entries": 99,
+          "lessons": {
+            "Topic Talk": 16,
+            "Lesson 1": 31,
+            "Lesson 2": 20,
+            "Lesson 3": 28,
+            "Writing Workshop": 1,
+            "Reading Club 1": 1,
+            "Reading Club 2": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "title": "必修第三册",
+      "entries": 273,
+      "starred": 22,
+      "secondary_only": 0,
+      "sha256": "f28c21ff261d2b7264d435c182ba5e9d3e93aa9363504be6ecc196d98e728b3f",
+      "units": [
+        {
+          "unit": 7,
+          "title": "Art",
+          "entries": 101,
+          "lessons": {
+            "Topic Talk": 19,
+            "Lesson 1": 21,
+            "Lesson 2": 15,
+            "Lesson 3": 23,
+            "Writing Workshop": 12,
+            "Reading Club 1": 7,
+            "Reading Club 2": 4
+          }
+        },
+        {
+          "unit": 8,
+          "title": "Green Living",
+          "entries": 93,
+          "lessons": {
+            "Topic Talk": 17,
+            "Lesson 1": 15,
+            "Lesson 2": 24,
+            "Lesson 3": 8,
+            "Writing Workshop": 19,
+            "Reading Club 1": 4,
+            "Reading Club 2": 6
+          }
+        },
+        {
+          "unit": 9,
+          "title": "Learning",
+          "entries": 79,
+          "lessons": {
+            "Topic Talk": 4,
+            "Lesson 1": 22,
+            "Lesson 2": 21,
+            "Lesson 3": 18,
+            "Writing Workshop": 4,
+            "Reading Club 1": 2,
+            "Reading Club 2": 8
+          }
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "选择性必修第一册",
+      "entries": 306,
+      "starred": 37,
+      "secondary_only": 1,
+      "sha256": "38bd631cbadb3ad671fec7618948cb4e1a01241f028c556ed7ff048da7b6c255",
+      "units": [
+        {
+          "unit": 1,
+          "title": "Relationships",
+          "entries": 108,
+          "lessons": {
+            "Topic Talk": 14,
+            "Lesson 1": 20,
+            "Lesson 2": 13,
+            "Lesson 3": 38,
+            "Writing Workshop": 14,
+            "Reading Club 1": 3,
+            "Reading Club 2": 6
+          }
+        },
+        {
+          "unit": 2,
+          "title": "Success",
+          "entries": 97,
+          "lessons": {
+            "Topic Talk": 15,
+            "Lesson 1": 13,
+            "Lesson 2": 14,
+            "Lesson 3": 30,
+            "Writing Workshop": 9,
+            "Reading Club 1": 5,
+            "Reading Club 2": 11
+          }
+        },
+        {
+          "unit": 3,
+          "title": "Conservation",
+          "entries": 101,
+          "lessons": {
+            "Topic Talk": 19,
+            "Lesson 1": 17,
+            "Lesson 2": 23,
+            "Lesson 3": 15,
+            "Writing Workshop": 15,
+            "Reading Club 1": 8,
+            "Reading Club 2": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "选择性必修第二册",
+      "entries": 343,
+      "starred": 34,
+      "secondary_only": 0,
+      "sha256": "befcb07fdec1b641498f132f6ecc66ec58dfe532709b0f52ad95a461103e5520",
+      "units": [
+        {
+          "unit": 4,
+          "title": "Humour",
+          "entries": 116,
+          "lessons": {
+            "Topic Talk": 23,
+            "Lesson 1": 30,
+            "Lesson 2": 18,
+            "Lesson 3": 36,
+            "Writing Workshop": 3,
+            "Reading Club 1": 2,
+            "Reading Club 2": 4
+          }
+        },
+        {
+          "unit": 5,
+          "title": "Education",
+          "entries": 125,
+          "lessons": {
+            "Topic Talk": 12,
+            "Lesson 1": 39,
+            "Lesson 2": 37,
+            "Lesson 3": 25,
+            "Writing Workshop": 8,
+            "Reading Club 1": 1,
+            "Reading Club 2": 3
+          }
+        },
+        {
+          "unit": 6,
+          "title": "The Media",
+          "entries": 102,
+          "lessons": {
+            "Topic Talk": 25,
+            "Lesson 1": 22,
+            "Lesson 2": 9,
+            "Lesson 3": 26,
+            "Writing Workshop": 19,
+            "Reading Club 2": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "选择性必修第三册",
+      "entries": 308,
+      "starred": 69,
+      "secondary_only": 0,
+      "sha256": "983a9d918d3578bd5643f15b4fca0e8885945211410bbe7d04dea8b6b9d3365c",
+      "units": [
+        {
+          "unit": 7,
+          "title": "Careers",
+          "entries": 91,
+          "lessons": {
+            "Topic Talk": 30,
+            "Lesson 1": 18,
+            "Lesson 2": 8,
+            "Lesson 3": 23,
+            "Writing Workshop": 8,
+            "Reading Club 1": 2,
+            "Reading Club 2": 2
+          }
+        },
+        {
+          "unit": 8,
+          "title": "Literature",
+          "entries": 120,
+          "lessons": {
+            "Topic Talk": 30,
+            "Lesson 1": 21,
+            "Lesson 2": 33,
+            "Lesson 3": 24,
+            "Writing Workshop": 5,
+            "Reading Club 1": 2,
+            "Reading Club 2": 5
+          }
+        },
+        {
+          "unit": 9,
+          "title": "Human Biology",
+          "entries": 97,
+          "lessons": {
+            "Topic Talk": 14,
+            "Lesson 1": 30,
+            "Lesson 2": 11,
+            "Lesson 3": 30,
+            "Writing Workshop": 4,
+            "Reading Club 1": 4,
+            "Reading Club 2": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "选择性必修第四册",
+      "entries": 238,
+      "starred": 40,
+      "secondary_only": 0,
+      "sha256": "ca860685f5e077af92e30af8d5c55381caa56fcf7a2f3590366db94d7ef80990",
+      "units": [
+        {
+          "unit": 10,
+          "title": "Connections",
+          "entries": 69,
+          "lessons": {
+            "Topic Talk": 18,
+            "Lesson 1": 10,
+            "Lesson 2": 7,
+            "Lesson 3": 24,
+            "Writing Workshop": 1,
+            "Reading Club 1": 3,
+            "Reading Club 2": 6
+          }
+        },
+        {
+          "unit": 11,
+          "title": "Conflict and Compromise",
+          "entries": 97,
+          "lessons": {
+            "Topic Talk": 15,
+            "Lesson 1": 29,
+            "Lesson 2": 3,
+            "Lesson 3": 28,
+            "Writing Workshop": 13,
+            "Reading Club 1": 3,
+            "Reading Club 2": 6
+          }
+        },
+        {
+          "unit": 12,
+          "title": "Innovation",
+          "entries": 72,
+          "lessons": {
+            "Topic Talk": 9,
+            "Lesson 1": 32,
+            "Lesson 2": 5,
+            "Lesson 3": 9,
+            "Writing Workshop": 6,
+            "Reading Club 1": 4,
+            "Reading Club 2": 7
+          }
+        }
+      ]
+    }
+  ],
+  "total_entries": 2137,
+  "note": "条目为词、短语和教材缩写；保留各册出现位置，不按词头跨册去重。音标或词性为空表示教材未单列，不用机器编造。source_page=0表示仅见于有出处的网络索引，供区分印次差异。"
+}

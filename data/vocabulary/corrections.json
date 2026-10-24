@@ -1,0 +1,596 @@
+[
+  {
+    "book_id": "c1",
+    "word": "am (ante meridiem)",
+    "before": {
+      "source_page": 108
+    },
+    "after": {
+      "source_page": 108
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "arise",
+    "before": {
+      "source_page": 109
+    },
+    "after": {
+      "source_page": 108
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "teen",
+    "before": {
+      "pos": "adj.",
+      "chinese": "青少年的，十几岁孩子的"
+    },
+    "after": {
+      "pos": "n.",
+      "chinese": "少年，十几岁的孩子"
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "meanwhile",
+    "before": {
+      "starred": false
+    },
+    "after": {
+      "starred": true
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "cafe",
+    "before": {
+      "word": "cafe",
+      "source_page": 108
+    },
+    "after": {
+      "word": "café",
+      "source_page": 109
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "function",
+    "before": {
+      "pos": "n.",
+      "chinese": "功能"
+    },
+    "after": {
+      "pos": "vi.; n.",
+      "chinese": "运转，工作；功能"
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "graduate",
+    "before": {
+      "phonetic": "/ˈɡrædʒuəɪt /"
+    },
+    "after": {
+      "phonetic": "/ˈɡrædʒueɪt/"
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "intend",
+    "before": {
+      "lesson": "Writing Workshop",
+      "source_page": 110
+    },
+    "after": {
+      "lesson": "Lesson 3",
+      "source_page": 110
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "in good/bad shape",
+    "before": {
+      "source_page": 108
+    },
+    "after": {
+      "source_page": 110
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "desire",
+    "before": {
+      "pos": ""
+    },
+    "after": {
+      "pos": "n."
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "occupy",
+    "before": {
+      "phonetic": "/ˈɑkjəpaɪ/"
+    },
+    "after": {
+      "phonetic": "/ˈɒkjʊpaɪ/"
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "weekly",
+    "before": {
+      "phonetic": "/ˈwɪːklɪ/"
+    },
+    "after": {
+      "phonetic": "/ˈwiːkli/"
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "particular",
+    "before": {
+      "pos": "n.; adj.",
+      "chinese": "尤其，特别；特定的"
+    },
+    "after": {
+      "pos": "adj.",
+      "chinese": "特定的"
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "pudding",
+    "before": {
+      "lesson": "Topic Talk",
+      "source_page": 113
+    },
+    "after": {
+      "lesson": "Lesson 2",
+      "source_page": 113
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "summarise",
+    "before": {
+      "phonetic": "/ˈsʊməraɪz/"
+    },
+    "after": {
+      "phonetic": "/ˈsʌməraɪz/"
+    }
+  },
+  {
+    "book_id": "c1",
+    "word": "saying",
+    "before": null,
+    "after": {
+      "word": "saying",
+      "phonetic": "/ˈseɪɪŋ/",
+      "pos": "n.",
+      "chinese": "格言，谚语",
+      "unit": 1,
+      "lesson": "Lesson 1",
+      "starred": false,
+      "source_page": 109,
+      "unit_title": "Life Choices",
+      "source_url": "https://github.com/TapXWorld/ChinaTextbook/blob/master/%E9%AB%98%E4%B8%AD/%E8%8B%B1%E8%AF%AD/%E5%8C%97%E5%B8%88%E5%A4%A7%E7%89%88-%E5%8C%97%E4%BA%AC%E5%B8%88%E8%8C%83%E5%A4%A7%E5%AD%A6%E5%87%BA%E7%89%88%E7%A4%BE/%E6%99%AE%E9%80%9A%E9%AB%98%E4%B8%AD%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E8%8B%B1%E8%AF%AD%E5%BF%85%E4%BF%AE%20%E7%AC%AC%E4%B8%80%E5%86%8C.pdf.1",
+      "id": "c1-0062",
+      "position": 62
+    },
+    "reason": "补入教材原版词条，网络索引遗漏"
+  },
+  {
+    "book_id": "c1",
+    "word": "humbly",
+    "before": null,
+    "after": {
+      "word": "humbly",
+      "phonetic": "/ˈhʌmbli/",
+      "pos": "adv.",
+      "chinese": "谦虚地",
+      "unit": 3,
+      "lesson": "Reading Club 2",
+      "starred": false,
+      "source_page": 113,
+      "unit_title": "Celebrations",
+      "source_url": "https://github.com/TapXWorld/ChinaTextbook/blob/master/%E9%AB%98%E4%B8%AD/%E8%8B%B1%E8%AF%AD/%E5%8C%97%E5%B8%88%E5%A4%A7%E7%89%88-%E5%8C%97%E4%BA%AC%E5%B8%88%E8%8C%83%E5%A4%A7%E5%AD%A6%E5%87%BA%E7%89%88%E7%A4%BE/%E6%99%AE%E9%80%9A%E9%AB%98%E4%B8%AD%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E8%8B%B1%E8%AF%AD%E5%BF%85%E4%BF%AE%20%E7%AC%AC%E4%B8%80%E5%86%8C.pdf.1",
+      "id": "c1-0359",
+      "position": 359
+    },
+    "reason": "补入教材原版词条，网络索引遗漏"
+  },
+  {
+    "book_id": "c2",
+    "word": "2-D",
+    "before": {
+      "word": "2-D",
+      "source_page": 108
+    },
+    "after": {
+      "word": "2D (2-dimensional)",
+      "source_page": 108
+    }
+  },
+  {
+    "book_id": "c2",
+    "word": "VR (Vintual Reality)",
+    "before": {
+      "word": "VR (Vintual Reality)",
+      "source_page": 108
+    },
+    "after": {
+      "word": "VR (Virtual Reality)",
+      "source_page": 108
+    }
+  },
+  {
+    "book_id": "c2",
+    "word": "boot",
+    "before": {
+      "source_page": 108
+    },
+    "after": {
+      "source_page": 110
+    }
+  },
+  {
+    "book_id": "c2",
+    "word": "anxiously",
+    "before": {
+      "source_page": 108
+    },
+    "after": {
+      "source_page": 111
+    }
+  },
+  {
+    "book_id": "c2",
+    "word": "creatively",
+    "before": {
+      "pos": "adj."
+    },
+    "after": {
+      "pos": "adv."
+    }
+  },
+  {
+    "book_id": "c2",
+    "word": "What a shame!",
+    "before": {
+      "source_page": 108
+    },
+    "after": {
+      "source_page": 112
+    }
+  },
+  {
+    "book_id": "c2",
+    "word": "independence",
+    "before": null,
+    "after": {
+      "word": "independence",
+      "phonetic": "/ˌɪndɪˈpendəns/",
+      "pos": "n.",
+      "chinese": "独立",
+      "unit": 6,
+      "lesson": "Lesson 2",
+      "starred": false,
+      "source_page": 112,
+      "unit_title": "The Admirable",
+      "source_url": "https://github.com/TapXWorld/ChinaTextbook/blob/master/%E9%AB%98%E4%B8%AD/%E8%8B%B1%E8%AF%AD/%E5%8C%97%E5%B8%88%E5%A4%A7%E7%89%88-%E5%8C%97%E4%BA%AC%E5%B8%88%E8%8C%83%E5%A4%A7%E5%AD%A6%E5%87%BA%E7%89%88%E7%A4%BE/%E6%99%AE%E9%80%9A%E9%AB%98%E4%B8%AD%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E8%8B%B1%E8%AF%AD%E5%BF%85%E4%BF%AE%20%E7%AC%AC%E4%BA%8C%E5%86%8C.pdf.1",
+      "id": "c2-0261",
+      "position": 261
+    },
+    "reason": "补入教材原版词条，网络索引遗漏"
+  },
+  {
+    "book_id": "c3",
+    "word": "mentally",
+    "before": {
+      "pos": "adj."
+    },
+    "after": {
+      "pos": "adv."
+    }
+  },
+  {
+    "book_id": "c3",
+    "word": "carriage",
+    "before": {
+      "starred": false,
+      "source_page": 113
+    },
+    "after": {
+      "starred": true,
+      "source_page": 112
+    }
+  },
+  {
+    "book_id": "c3",
+    "word": "bothered",
+    "before": {
+      "word": "bothered",
+      "phonetic": "/ˈbɒðəd/",
+      "pos": "adj.",
+      "chinese": "担心的；烦恼的",
+      "source_page": 114
+    },
+    "after": {
+      "word": "bother",
+      "phonetic": "/ˈbɒðə/",
+      "pos": "vi.; vt.",
+      "chinese": "费心，麻烦",
+      "source_page": 114
+    }
+  },
+  {
+    "book_id": "c3",
+    "word": "not be bothered to do sth",
+    "before": {
+      "word": "not be bothered to do sth"
+    },
+    "after": {
+      "word": "can't be bothered to do sth"
+    }
+  },
+  {
+    "book_id": "c3",
+    "word": "pi (π)",
+    "before": {
+      "source_page": 112
+    },
+    "after": {
+      "source_page": 116
+    }
+  },
+  {
+    "book_id": "c3",
+    "word": "reflect on",
+    "before": null,
+    "after": {
+      "word": "reflect on",
+      "phonetic": "",
+      "pos": "",
+      "chinese": "思考",
+      "unit": 9,
+      "lesson": "Lesson 1",
+      "starred": false,
+      "source_page": 115,
+      "unit_title": "Learning",
+      "source_url": "https://github.com/TapXWorld/ChinaTextbook/blob/master/%E9%AB%98%E4%B8%AD/%E8%8B%B1%E8%AF%AD/%E5%8C%97%E5%B8%88%E5%A4%A7%E7%89%88-%E5%8C%97%E4%BA%AC%E5%B8%88%E8%8C%83%E5%A4%A7%E5%AD%A6%E5%87%BA%E7%89%88%E7%A4%BE/%E6%99%AE%E9%80%9A%E9%AB%98%E4%B8%AD%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E8%8B%B1%E8%AF%AD%E5%BF%85%E4%BF%AE%20%E7%AC%AC%E4%B8%89%E5%86%8C.pdf.1",
+      "id": "c3-0200",
+      "position": 200
+    },
+    "reason": "补入教材原版词条，网络索引遗漏"
+  },
+  {
+    "book_id": "s1",
+    "word": "passionate",
+    "before": {
+      "phonetic": "/ˈhjuːmə(r)/"
+    },
+    "after": {
+      "phonetic": "/ˈpæʃənət/"
+    }
+  },
+  {
+    "book_id": "s1",
+    "word": "occasionally",
+    "before": {
+      "pos": "adj."
+    },
+    "after": {
+      "pos": "adv."
+    }
+  },
+  {
+    "book_id": "s1",
+    "word": "a couple of",
+    "before": {
+      "chinese": "一双，一对"
+    },
+    "after": {
+      "chinese": "一些，几个；一双，一对"
+    }
+  },
+  {
+    "book_id": "s1",
+    "word": "comfortably",
+    "before": {
+      "pos": "adj."
+    },
+    "after": {
+      "pos": "adv."
+    }
+  },
+  {
+    "book_id": "s1",
+    "word": "devote....to",
+    "before": {
+      "word": "devote....to"
+    },
+    "after": {
+      "word": "devote...to"
+    }
+  },
+  {
+    "book_id": "s2",
+    "word": "nationality",
+    "before": {
+      "source_page": 117
+    },
+    "after": {
+      "source_page": 118
+    }
+  },
+  {
+    "book_id": "s2",
+    "word": "unfortunate",
+    "before": {
+      "starred": false
+    },
+    "after": {
+      "starred": false
+    }
+  },
+  {
+    "book_id": "s2",
+    "word": "necklace",
+    "before": {
+      "starred": false,
+      "source_page": 119
+    },
+    "after": {
+      "starred": true,
+      "source_page": 119
+    }
+  },
+  {
+    "book_id": "s2",
+    "word": "BCE ( before Common Era)",
+    "before": {
+      "word": "BCE ( before Common Era)",
+      "source_page": 117
+    },
+    "after": {
+      "word": "BCE (before Common Era)",
+      "source_page": 120
+    }
+  },
+  {
+    "book_id": "s2",
+    "word": "philosophy",
+    "before": {
+      "lesson": "Reading Club 1"
+    },
+    "after": {
+      "lesson": "Reading Club 2"
+    }
+  },
+  {
+    "book_id": "s2",
+    "word": "restrict",
+    "before": {
+      "lesson": "Reading Club 1"
+    },
+    "after": {
+      "lesson": "Reading Club 2"
+    }
+  },
+  {
+    "book_id": "s2",
+    "word": "arrange",
+    "before": {
+      "lesson": "Reading Club 1"
+    },
+    "after": {
+      "lesson": "Reading Club 2"
+    }
+  },
+  {
+    "book_id": "s3",
+    "word": "lawyer",
+    "before": {
+      "source_page": 114
+    },
+    "after": {
+      "source_page": 114
+    }
+  },
+  {
+    "book_id": "s3",
+    "word": "employ",
+    "before": {
+      "pos": "vt.& n."
+    },
+    "after": {
+      "pos": "vt."
+    }
+  },
+  {
+    "book_id": "s3",
+    "word": "AI (artificial intelligence)",
+    "before": {
+      "source_page": 114
+    },
+    "after": {
+      "source_page": 115
+    }
+  },
+  {
+    "book_id": "s3",
+    "word": "outsource",
+    "before": {
+      "starred": false
+    },
+    "after": {
+      "starred": true
+    }
+  },
+  {
+    "book_id": "s3",
+    "word": "junk food",
+    "before": {
+      "source_page": 114
+    },
+    "after": {
+      "source_page": 119
+    }
+  },
+  {
+    "book_id": "s4",
+    "word": "radium",
+    "before": {
+      "word": "radium",
+      "phonetic": "/ˈreɪdiəm/"
+    },
+    "after": {
+      "word": "stadium",
+      "phonetic": "/ˈsteɪdiəm/"
+    }
+  },
+  {
+    "book_id": "s4",
+    "word": "orphan",
+    "before": {
+      "starred": true,
+      "source_page": 116
+    },
+    "after": {
+      "starred": true,
+      "source_page": 117
+    }
+  },
+  {
+    "book_id": "s4",
+    "word": "well-being",
+    "before": {
+      "source_page": 116
+    },
+    "after": {
+      "source_page": 119
+    }
+  },
+  {
+    "book_id": "s4",
+    "word": "intend",
+    "before": null,
+    "after": {
+      "word": "intend",
+      "phonetic": "/ɪnˈtend/",
+      "pos": "vt.",
+      "chinese": "打算，计划",
+      "unit": 11,
+      "lesson": "Topic Talk",
+      "starred": false,
+      "source_page": 123,
+      "unit_title": "Conflict and Compromise",
+      "source_url": "https://github.com/TapXWorld/ChinaTextbook/blob/master/%E9%AB%98%E4%B8%AD/%E8%8B%B1%E8%AF%AD/%E5%8C%97%E5%B8%88%E5%A4%A7%E7%89%88-%E5%8C%97%E4%BA%AC%E5%B8%88%E8%8C%83%E5%A4%A7%E5%AD%A6%E5%87%BA%E7%89%88%E7%A4%BE/%E6%99%AE%E9%80%9A%E9%AB%98%E4%B8%AD%E6%95%99%E7%A7%91%E4%B9%A6%C2%B7%E8%8B%B1%E8%AF%AD%E9%80%89%E6%8B%A9%E6%80%A7%E5%BF%85%E4%BF%AE%20%E7%AC%AC%E5%9B%9B%E5%86%8C.pdf.1",
+      "id": "s4-0077",
+      "position": 77
+    },
+    "reason": "补入教材原版词条，网络索引遗漏"
+  }
+]

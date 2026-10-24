@@ -1,0 +1,82 @@
+"use client";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { api } from "../lib/api";
+import { subjects } from "../lib/learning";
+import { Loading, Navigation, useProtected } from "./providers";
+export default function LearningHome() {
+  const auth = useProtected();
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  useEffect(() => {
+    if (auth.allowed)
+      api<{ chapters: { subject_id: string; question_count: number }[] }>(
+        "/learning/catalog",
+      )
+        .then((d) => {
+          const next: Record<string, number> = {};
+          for (const c of d.chapters)
+            next[c.subject_id] =
+              (next[c.subject_id] || 0) + Number(c.question_count);
+          setCounts(next);
+        })
+        .catch(() => {});
+  }, [auth.allowed]);
+  if (!auth.allowed) return <Loading />;
+  return (
+    <main className="shell">
+      <Navigation />
+      <div id="page-content" tabIndex={-1} className="learning-home">
+        <header className="learning-hero">
+          <span className="eyebrow">ENGLISH · 北师大版高中英语</span>
+          <h1>
+            从好奇开始，
+            <br />
+            把英语学明白。
+          </h1>
+          <p>从教材词汇到阅读、写作与听说，每天练一点。</p>
+        </header>
+        <section className="subject-grid" aria-label="英语专项练习">
+          {subjects.map((s) => (
+            <Link
+              className={`subject-card subject-${s.tone}`}
+              href={`/practice?subject=${s.id}`}
+              key={s.id}
+            >
+              <span className="subject-symbol" aria-hidden="true">
+                {s.symbol}
+              </span>
+              <div>
+                <h2>{s.name}</h2>
+                <p>{s.note}</p>
+              </div>
+              <span className="subject-count">
+                {counts[s.id] || 0} 道已审核题目{" "}
+                <span aria-hidden="true">↗</span>
+              </span>
+            </Link>
+          ))}
+        </section>
+        <section className="learning-shortcuts">
+          <Link className="panel glass" href="/english">
+            <span className="eyebrow">ENGLISH · 每日积累</span>
+            <h2>单词，记得更牢。</h2>
+            <p>继续词汇复习、拼写与听音训练。</p>
+            <span>开始复习 →</span>
+          </Link>
+          <Link className="panel glass" href="/challenge">
+            <span className="eyebrow">6 秒 / 3 秒</span>
+            <h2>极速四选一</h2>
+            <p>英选中、中选英。普通、困难、绝望。</p>
+            <span>进入挑战 →</span>
+          </Link>
+        </section>
+        {auth.user?.role === "admin" && (
+          <p className="setting-note">
+            准备教学内容：
+            <Link href="/admin/resources">导入英语资料、审核题目、配置 AI</Link>
+          </p>
+        )}
+      </div>
+    </main>
+  );
+}
