@@ -76,8 +76,8 @@ func TestSyntaxReferenceTransferAndRecovery(t *testing.T) {
 
 func TestEnglishIndependentAttemptAndIsolation(t *testing.T) {
 	s, a, b := learningTestServer(t)
-	q := learningInsertQuestion(t, s, "english", "reading")
-	out := a.call("POST", "/api/v1/learning/attempts", map[string]string{"subject_id": "english", "kind": "reading", "question_id": q, "request_id": "english-source-start"}, 200)
+	learningInsertQuestion(t, s, "english", "reading")
+	out := a.call("POST", "/api/v1/learning/attempts", map[string]string{"subject_id": "english", "kind": "reading", "request_id": "english-source-start"}, 200)
 	aid := rawString(out, "id")
 	input := map[string]string{"request_id": "syntax-create-1", "text": "The book helped me.", "source_attempt_id": aid}
 	a.call("POST", "/api/v1/learning/english/syntax", input, 403)
