@@ -131,7 +131,7 @@ func wordRoundPublic(id, prompt, difficulty, direction string, choices []platfor
 		}
 		public = append(public, p)
 	}
-	result := map[string]any{"id": id, "prompt": prompt, "difficulty": difficulty, "direction": direction, "choices": public, "started_at": started, "deadline": deadline, "server_time": time.Now(), "answered_at": answered}
+	result := map[string]any{"id": id, "prompt": prompt, "difficulty": difficulty, "direction": direction, "choices": public, "started_at": started, "deadline": deadline, "server_time": time.Now(), "answered_at": answered, "duration_ms": deadline.Sub(started).Milliseconds()}
 	if answered != nil {
 		result["correct"] = correct
 		result["picked"] = picked
@@ -140,22 +140,33 @@ func wordRoundPublic(id, prompt, difficulty, direction string, choices []platfor
 	return result
 }
 func (s *server) loadWordRound(ctx context.Context, id string) (map[string]any, error) {
-	var prompt, difficulty, direction, correctID string
+	var prompt, difficulty, direction, correctID, word, phonetic, pos, meaning, entryKind, rationale string
 	var choices []byte
 	var started, deadline time.Time
 	var answered *time.Time
 	var correct *bool
 	var picked *string
-	err := s.db.QueryRowContext(ctx, `SELECT s.prompt,s.difficulty,s.direction,r.choice_order,r.started_at,r.deadline,r.answered_at,r.correct,r.picked,s.correct_id FROM learning_word_rounds r JOIN learning_word_sets s ON s.id=r.set_id WHERE r.id=$1 AND r.user_id=$2`, id, userID(ctx)).Scan(&prompt, &difficulty, &direction, &choices, &started, &deadline, &answered, &correct, &picked, &correctID)
+	err := s.db.QueryRowContext(ctx, `SELECT s.prompt,s.difficulty,s.direction,r.choice_order,r.started_at,r.deadline,r.answered_at,r.correct,r.picked,s.correct_id,w.lemma,ws.phonetic,ws.part_of_speech,ws.meaning_zh,w.entry_kind,s.rationale FROM learning_word_rounds r JOIN learning_word_sets s ON s.id=r.set_id JOIN word_senses ws ON ws.id=s.sense_id JOIN words w ON w.id=ws.word_id WHERE r.id=$1 AND r.user_id=$2`, id, userID(ctx)).Scan(&prompt, &difficulty, &direction, &choices, &started, &deadline, &answered, &correct, &picked, &correctID, &word, &phonetic, &pos, &meaning, &entryKind, &rationale)
 	var cs []platform.Choice
 	_ = json.Unmarshal(choices, &cs)
-	return wordRoundPublic(id, prompt, difficulty, direction, cs, started, deadline, answered, correct, picked, correctID), err
+	out := wordRoundPublic(id, prompt, difficulty, direction, cs, started, deadline, answered, correct, picked, correctID)
+	if answered != nil {
+		out["vocabulary"] = map[string]string{"word": word, "phonetic": phonetic, "pos": pos, "chinese": meaning, "entry_kind": entryKind}
+		out["rationale"] = rationale
+	}
+	return out, err
 }
 func (s *server) nextWordRound(w http.ResponseWriter, r *http.Request) {
 	var in struct {
 		Direction  string `json:"direction"`
 		Difficulty string `json:"difficulty"`
 		RequestID  string `json:"request_id"`
+		Seconds    int    `json:"seconds"`
+		Book       string `json:"book_id"`
+		Unit       int    `json:"unit"`
+		Lesson     string `json:"lesson"`
+		Starred    *bool  `json:"starred"`
+		Kind       string `json:"entry_kind"`
 	}
 	if decode(r, &in) != nil || (in.Direction != "en_zh" && in.Direction != "zh_en") || !requestIDPattern.MatchString(in.RequestID) {
 		fail(w, 400, "方向或请求编号无效")
@@ -166,6 +177,19 @@ func (s *server) nextWordRound(w http.ResponseWriter, r *http.Request) {
 		fail(w, 400, err.Error())
 		return
 	}
+	scope := textbookScope{Book: in.Book, Unit: in.Unit, Lesson: in.Lesson, Starred: in.Starred, Kind: in.Kind}
+	if err := scope.validate(); err != nil {
+		fail(w, 400, err.Error())
+		return
+	}
+	if in.Seconds != 0 {
+		if in.Seconds != 2 && in.Seconds != 3 && in.Seconds != 6 {
+			fail(w, 400, "计时仅支持2、3或6秒")
+			return
+		}
+		ms = in.Seconds * 1000
+	}
+	payload, _ := json.Marshal(in)
 	tx, err := s.db.BeginTx(r.Context(), nil)
 	if err != nil {
 		s.dbError(w, "word round", err)
@@ -177,8 +201,17 @@ func (s *server) nextWordRound(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var old string
-	err = tx.QueryRowContext(r.Context(), `SELECT id FROM learning_word_rounds WHERE user_id=$1 AND request_id=$2`, userID(r.Context()), in.RequestID).Scan(&old)
+	var prior []byte
+	err = tx.QueryRowContext(r.Context(), `SELECT id,request_payload FROM learning_word_rounds WHERE user_id=$1 AND request_id=$2`, userID(r.Context()), in.RequestID).Scan(&old, &prior)
 	if err == nil {
+		var previous any
+		_ = json.Unmarshal(prior, &previous)
+		var current any
+		_ = json.Unmarshal(payload, &current)
+		if string(prior) != "{}" && payloadDigest(previous) != payloadDigest(current) {
+			fail(w, 409, "请求编号已用于另一组挑战设置")
+			return
+		}
 		tx.Rollback()
 		out, e := s.loadWordRound(r.Context(), old)
 		if e != nil {
@@ -214,9 +247,9 @@ func (s *server) nextWordRound(w http.ResponseWriter, r *http.Request) {
 	}
 	var setID, prompt string
 	var raw []byte
-	err = tx.QueryRowContext(r.Context(), `SELECT s.id,s.prompt,s.choices FROM learning_word_sets s WHERE s.approved AND s.direction=$1 AND s.difficulty=$2 AND NOT EXISTS(SELECT 1 FROM suspended_senses x WHERE x.user_id=$3 AND x.sense_id=s.sense_id) ORDER BY (SELECT count(*) FROM learning_word_rounds r WHERE r.user_id=$3 AND r.set_id=s.id),random() LIMIT 1`, in.Direction, in.Difficulty, userID(r.Context())).Scan(&setID, &prompt, &raw)
+	err = tx.QueryRowContext(r.Context(), `SELECT ws.id,ws.prompt,ws.choices FROM learning_word_sets ws JOIN word_senses s ON s.id=ws.sense_id JOIN words w ON w.id=s.word_id WHERE ws.approved AND ws.direction=$1 AND ws.difficulty=$2 AND NOT EXISTS(SELECT 1 FROM suspended_senses x WHERE x.user_id=$3 AND x.sense_id=ws.sense_id)`+textbookSenseFilter(4)+` ORDER BY (ws.id=COALESCE((SELECT set_id FROM learning_word_rounds WHERE user_id=$3 ORDER BY started_at DESC LIMIT 1),'')),COALESCE((SELECT correct FROM learning_word_rounds WHERE user_id=$3 AND set_id=ws.id ORDER BY started_at DESC LIMIT 1),true),(SELECT count(*) FROM learning_word_rounds r WHERE r.user_id=$3 AND r.set_id=ws.id),random() LIMIT 1`, in.Direction, in.Difficulty, userID(r.Context()), scope.Book, scope.Unit, scope.Lesson, scope.Starred, scope.Kind).Scan(&setID, &prompt, &raw)
 	if err == sql.ErrNoRows {
-		fail(w, 404, "该难度暂无已审核选项集，请管理员生成并审核")
+		fail(w, 404, "当前教材范围、词条类型和难度暂无已审核选项集；可放宽范围，或请管理员生成并审核")
 		return
 	}
 	if err != nil {
@@ -231,7 +264,7 @@ func (s *server) nextWordRound(w http.ResponseWriter, r *http.Request) {
 	rand.Shuffle(len(choices), func(i, j int) { choices[i], choices[j] = choices[j], choices[i] })
 	raw, _ = json.Marshal(choices)
 	id := security.Token(18)
-	_, err = tx.ExecContext(r.Context(), `INSERT INTO learning_word_rounds(id,user_id,set_id,request_id,choice_order,started_at,deadline) VALUES($1,$2,$3,$4,$5,clock_timestamp(),clock_timestamp()+make_interval(secs=>$6::double precision/1000))`, id, userID(r.Context()), setID, in.RequestID, string(raw), ms)
+	_, err = tx.ExecContext(r.Context(), `INSERT INTO learning_word_rounds(id,user_id,set_id,request_id,choice_order,started_at,deadline,request_payload) VALUES($1,$2,$3,$4,$5,clock_timestamp(),clock_timestamp()+make_interval(secs=>$6::double precision/1000),$7)`, id, userID(r.Context()), setID, in.RequestID, string(raw), ms, string(payload))
 	if err == nil {
 		err = tx.Commit()
 	}

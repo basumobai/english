@@ -8,14 +8,15 @@ import (
 )
 
 type Options struct {
-	BookID   string   `json:"book_id"`
-	Unit     int      `json:"unit"`
-	Lesson   string   `json:"lesson"`
-	Starred  *bool    `json:"starred"`
-	Mode     string   `json:"mode"`
-	Types    []string `json:"types"`
-	Limit    int      `json:"limit"`
-	NewLimit *int     `json:"new_limit"`
+	EntryKind string   `json:"entry_kind"`
+	BookID    string   `json:"book_id"`
+	Unit      int      `json:"unit"`
+	Lesson    string   `json:"lesson"`
+	Starred   *bool    `json:"starred"`
+	Mode      string   `json:"mode"`
+	Types     []string `json:"types"`
+	Limit     int      `json:"limit"`
+	NewLimit  *int     `json:"new_limit"`
 }
 
 func (o *Options) Validate() error {

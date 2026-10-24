@@ -126,7 +126,7 @@ func (s *server) vocabulary(w http.ResponseWriter, r *http.Request) {
 	rows, err := s.db.QueryContext(r.Context(), `SELECT s.id,w.lemma,s.phonetic,s.part_of_speech,s.meaning_zh,EXISTS(SELECT 1 FROM suspended_senses x WHERE x.user_id=$1 AND x.sense_id=s.id),
  COALESCE((SELECT SUM(attempts-correct_count) FROM review_states rs WHERE rs.user_id=$1 AND rs.sense_id=s.id),0),
  COALESCE((SELECT jsonb_agg(jsonb_build_object('book_id',te.book_id,'book_title',tb.title,'unit',te.unit,'unit_title',te.unit_title,'lesson',te.lesson,'starred',te.starred,'word',te.word,'phonetic',te.phonetic,'pos',te.part_of_speech,'chinese',te.meaning_zh,'source_url',te.source_url) ORDER BY te.book_id,te.position) FROM textbook_entries te JOIN textbook_books tb ON tb.id=te.book_id WHERE te.sense_id=s.id),'[]')
- FROM word_senses s JOIN words w ON w.id=s.word_id WHERE ($2='' OR w.lemma ILIKE '%'||$2||'%' OR s.meaning_zh ILIKE '%'||$2||'%')`+textbookSenseFilter(4)+` ORDER BY CASE WHEN $4<>'' THEN (SELECT min(position) FROM textbook_entries e WHERE e.sense_id=s.id AND e.book_id=$4) END,w.lemma,s.id LIMIT 50 OFFSET $3`, userID(r.Context()), query, (page-1)*50, scope.Book, scope.Unit, scope.Lesson, scope.Starred)
+ FROM word_senses s JOIN words w ON w.id=s.word_id WHERE ($2='' OR w.lemma ILIKE '%'||$2||'%' OR s.meaning_zh ILIKE '%'||$2||'%')`+textbookSenseFilter(4)+` ORDER BY CASE WHEN $4<>'' THEN (SELECT min(position) FROM textbook_entries e WHERE e.sense_id=s.id AND e.book_id=$4) END,w.lemma,s.id LIMIT 50 OFFSET $3`, userID(r.Context()), query, (page-1)*50, scope.Book, scope.Unit, scope.Lesson, scope.Starred, scope.Kind)
 	if err != nil {
 		s.dbError(w, "vocabulary", err)
 		return
@@ -143,7 +143,7 @@ func (s *server) vocabulary(w http.ResponseWriter, r *http.Request) {
 			s.dbError(w, "vocabulary row", err)
 			return
 		}
-		entries = append(entries, map[string]any{"id": id, "word": word, "phonetic": phonetic, "pos": pos, "chinese": chinese, "suspended": suspended, "failed_recalls": failures, "locations": locations})
+		entries = append(entries, map[string]any{"id": id, "word": word, "entry_kind": vocabulary.Kind(word), "phonetic": phonetic, "pos": pos, "chinese": chinese, "suspended": suspended, "failed_recalls": failures, "locations": locations})
 	}
 	if rows.Err() != nil {
 		s.dbError(w, "vocabulary rows", rows.Err())

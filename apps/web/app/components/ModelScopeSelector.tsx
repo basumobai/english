@@ -61,7 +61,7 @@ export function ModelScopeSelector({
           >
             <option value="all">全部类别</option>
             <option value="chat">聊天 / AI 助学</option>
-            <option value="tts">语音 / TTS</option>
+            <option value="tts">语音 / TTS</option><option value="asr">转写 / ASR</option>
           </select>
         </label>
         <label>
@@ -122,7 +122,7 @@ export function ModelScopeSelector({
                 <span>
                   <strong>{model.name}</strong>
                   <small>{model.model_id}</small>
-                  <small>{model.kind === "tts" ? "语音" : "聊天"}{disabled ? " · 已停用（仅可撤销）" : ""}</small>
+                  <small>{model.kind === "tts" ? "语音" : model.kind === "asr" ? "转写" : "聊天"}{disabled ? " · 已停用（仅可撤销）" : ""}</small>
                 </span>
               </label>
             );

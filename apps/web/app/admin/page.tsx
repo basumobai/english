@@ -19,7 +19,7 @@ type ConfigModel = {
   provider_id: string;
   model_id: string;
   name: string;
-  kind: "chat" | "tts";
+  kind: "chat" | "tts" | "asr";
   voices: string[];
   instructions: string;
   json_mode: boolean;
@@ -305,7 +305,7 @@ export default function Admin() {
                     setVoices(m.voices.join(", "));
                   }}
                 >
-                  {m.name} · {m.kind === "tts" ? "语音" : "聊天"}
+                  {m.name} · {m.kind === "tts" ? "语音" : m.kind === "asr" ? "转写" : "聊天"}
                   {!m.enabled ? " · 停用" : ""}
                 </button>
               ))}
@@ -355,7 +355,7 @@ export default function Admin() {
                   <select
                     value={model.kind}
                     onChange={(e) => {
-                      const kind = e.target.value as "chat" | "tts";
+                      const kind = e.target.value as "chat" | "tts" | "asr";
                       setModel({
                         ...model,
                         kind,
@@ -373,6 +373,7 @@ export default function Admin() {
                     {" "}
                     <option value="chat">聊天 / 句子 / 听力出题</option>
                     <option value="tts">自然语音 / 听音拼写</option>
+ <option value="asr">英语录音转写 / ASR</option>
                   </select>
                 </label>
                 <label>
@@ -662,7 +663,7 @@ export default function Admin() {
           <h2>教材词库 · 四字段导入</h2>
           <p>
             每行按顺序填写：单词、音标、词性、中文。支持 CSV、Tab
-            分隔或下面的空格格式；教材内容由你提供。
+            分隔或下面的空格格式。短语可在CSV/TSV中留空音标和词性，但要保留四列，如 look up,,,查阅。七册内置词库无需重复导入。
           </p>
           <pre className="sample">
             {"adapt /əˈdæpt/ v. 适应\nnecessary /ˈnesəsəri/ adj. 必要的"}

@@ -27,7 +27,7 @@ type Preview struct {
 }
 
 var plainRow = regexp.MustCompile(`^(.+?)\s+(/[^/]+/|\[[^\]]+\])\s+(\S+)\s+(.+)$`)
-var english = regexp.MustCompile(`^[a-zA-Z][a-zA-Z '\x{2019}.()-]*$`)
+var english = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9 '\x{2019}.()/\x{2026}-]*$`)
 
 func Parse(text string) Preview {
 	result := Preview{Entries: []Entry{}, Errors: []Issue{}}
@@ -47,6 +47,7 @@ func Parse(text string) Preview {
 		reader.TrimLeadingSpace = true
 		if strings.Contains(first, "\t") {
 			reader.Comma = '\t'
+			reader.TrimLeadingSpace = false
 		}
 		for {
 			before := reader.InputOffset()
@@ -96,14 +97,14 @@ func Parse(text string) Preview {
 			row[j] = strings.TrimSpace(row[j])
 		}
 		entry := Entry{strings.Join(strings.Fields(row[0]), " "), row[1], row[2], row[3], line}
-		valid := english.MatchString(entry.Word) && len([]rune(entry.Word)) <= 100 && entry.Phonetic != "" && len([]rune(entry.Phonetic)) <= 150 && entry.POS != "" && len(entry.POS) <= 40 && entry.Chinese != "" && len([]rune(entry.Chinese)) <= 500
+		valid := english.MatchString(entry.Word) && len([]rune(entry.Word)) <= 100 && (entry.Phonetic != "" || Kind(entry.Word) == "phrase") && len([]rune(entry.Phonetic)) <= 150 && (entry.POS != "" || Kind(entry.Word) == "phrase") && len(entry.POS) <= 40 && entry.Chinese != "" && len([]rune(entry.Chinese)) <= 500
 		for _, field := range row {
 			if strings.ContainsFunc(field, func(r rune) bool { return unicode.IsControl(r) }) {
 				valid = false
 			}
 		}
 		if !valid {
-			result.Errors = append(result.Errors, Issue{line, "字段为空、过长或包含不支持的字符"})
+			result.Errors = append(result.Errors, Issue{line, "单词需有音标和词性；短语可留空。检查字段长度与字符"})
 			continue
 		}
 		key := strings.ToLower(entry.Word) + "\x00" + entry.POS + "\x00" + entry.Chinese

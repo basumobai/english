@@ -1,10 +1,19 @@
 "use client";
+import {
+  TextbookScopeSelector,
+  allTextbooks,
+  textbookPayload,
+} from "../components/TextbookScopeSelector";
+import { WordTutor, type TutorWord } from "../components/WordTutor";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api, requestID } from "../../lib/api";
 import { Loading, Navigation, useProtected } from "../providers";
 type Round = {
   id: string;
+  duration_ms?: number;
+  vocabulary?: TutorWord;
+  rationale?: string;
   prompt: string;
   direction: string;
   difficulty: string;
@@ -18,6 +27,9 @@ type Round = {
 };
 export default function Challenge() {
   const auth = useProtected();
+  const [seconds, setSeconds] = useState(0),
+    [scope, setScope] = useState(allTextbooks),
+    [autoNext, setAutoNext] = useState(true);
   const [direction, setDirection] = useState("en_zh"),
     [difficulty, setDifficulty] = useState("normal"),
     [round, setRound] = useState<Round | null>(null),
@@ -46,13 +58,17 @@ export default function Challenge() {
     setError("");
     try {
       if (!pendingNext.current) pendingNext.current = requestID();
+      const requestedAt = Date.now();
       const next = await api<Round>("/learning/words/next", {
         direction,
         difficulty,
+        seconds,
+        ...textbookPayload(scope),
         request_id: pendingNext.current,
       });
       pendingNext.current = "";
-      offset.current = Date.parse(next.server_time) - Date.now();
+      offset.current =
+        Date.parse(next.server_time) - (requestedAt + Date.now()) / 2;
       roundRef.current = next;
       setRound(next);
       setLeft(
@@ -68,7 +84,10 @@ export default function Challenge() {
       busyRef.current = false;
       setBusy(false);
     }
-  }, [direction, difficulty]);
+  }, [direction, difficulty, seconds, scope]);
+  useEffect(() => {
+    pendingNext.current = "";
+  }, [direction, difficulty, seconds, scope]);
   const stop = useCallback(() => {
     setRunning(false);
     runningRef.current = false;
@@ -101,10 +120,14 @@ export default function Challenge() {
             total: v.total + 1,
           }));
         }
-        if (runningRef.current)
+        if (runningRef.current && result.correct && autoNext)
           nextTimer.current = setTimeout(() => {
             if (runningRef.current) void next();
-          }, 500);
+          }, 1200);
+        else {
+          setRunning(false);
+          runningRef.current = false;
+        }
       } catch (e) {
         setError((e as Error).message);
         setRunning(false);
@@ -113,7 +136,7 @@ export default function Challenge() {
         setBusy(false);
       }
     },
-    [next],
+    [next, autoNext],
   );
   useEffect(
     () => () => {
@@ -165,7 +188,9 @@ export default function Challenge() {
     questionHeading.current?.focus({ preventScroll: true });
   }, [round?.id, busy]);
   if (!auth.allowed) return <Loading />;
-  const limit = (round?.difficulty || difficulty) === "normal" ? 6 : 3;
+  const limit = round?.duration_ms
+    ? round.duration_ms / 1000
+    : seconds || ((round?.difficulty || difficulty) === "normal" ? 6 : 3);
   return (
     <main className="shell">
       <Navigation />
@@ -183,11 +208,39 @@ export default function Challenge() {
             <summary>
               挑战设置 ·{" "}
               {difficulty === "normal"
-                ? "普通 6 秒"
+                ? "普通"
                 : difficulty === "hard"
-                  ? "困难 3 秒"
-                  : "绝望 3 秒"}
+                  ? "困难"
+                  : "绝望"}
             </summary>
+            <TextbookScopeSelector
+              value={scope}
+              onChange={setScope}
+              disabled={running || busy}
+            />
+            <label>
+              作答计时
+              <select
+                aria-label="作答计时"
+                value={seconds}
+                disabled={running || busy}
+                onChange={(e) => setSeconds(Number(e.target.value))}
+              >
+                <option value={0}>随难度：普通6秒，困难/绝望3秒</option>
+                <option value={6}>6 秒 · 从容辨词</option>
+                <option value={3}>3 秒 · 快速反应</option>
+                <option value={2}>2 秒 · 极速挑战</option>
+              </select>
+            </label>
+            <label className="check">
+              <input
+                type="checkbox"
+                checked={autoNext}
+                disabled={running || busy}
+                onChange={(e) => setAutoNext(e.target.checked)}
+              />
+              答对后自动下一题；答错或超时停留复盘
+            </label>
             <label>
               方向
               <select
@@ -202,9 +255,9 @@ export default function Challenge() {
             <fieldset className="difficulty-picker">
               <legend>选择难度</legend>
               {[
-                ["normal", "普通", "6秒 · 四项差异明显"],
-                ["hard", "困难", "3秒 · 两项近似，正确项在其中"],
-                ["despair", "绝望", "3秒 · 四项近似，附词性"],
+                ["normal", "普通", "四项差异明显"],
+                ["hard", "困难", "两项近似，正确项在其中"],
+                ["despair", "绝望", "四项近似，附词性"],
               ].map(([id, name, note]) => (
                 <label key={id} className={difficulty === id ? "selected" : ""}>
                   <input
@@ -318,13 +371,51 @@ export default function Challenge() {
               ))}
             </div>
             {round.answered_at && (
-              <p className="challenge-verdict" role="status">
-                {round.correct
-                  ? "答对了。"
-                  : round.picked
-                    ? "这次选错了，记住标出的答案。"
-                    : "时间到了，记住标出的答案。"}
-              </p>
+              <div>
+                <p className="challenge-verdict" role="status">
+                  {round.correct
+                    ? "答对了。"
+                    : round.picked
+                      ? "这次选错了，记住标出的答案。"
+                      : "时间到了，记住标出的答案。"}
+                </p>
+                {round.vocabulary && (
+                  <>
+                    <p lang="en">
+                      <strong>{round.vocabulary.word}</strong>{" "}
+                      {round.vocabulary.phonetic}
+                    </p>
+                    <p>
+                      {round.vocabulary.pos} {round.vocabulary.chinese}
+                    </p>
+                    <WordTutor
+                      key={round.id}
+                      word={round.vocabulary}
+                      context={`题面：${round.prompt}；所选：${round.choices.find((c) => c.id === round.picked)?.text || "超时"}；结果：${round.correct ? "正确" : "未答对"}`}
+                    />
+                  </>
+                )}
+                {round.rationale && (
+                  <details>
+                    <summary>选项辨析依据（管理员已审核）</summary>
+                    <p>{round.rationale}</p>
+                  </details>
+                )}
+                {!running && (
+                  <button
+                    className="primary"
+                    disabled={busy}
+                    onClick={() => {
+                      focusNext.current = true;
+                      setRunning(true);
+                      runningRef.current = true;
+                      void next();
+                    }}
+                  >
+                    下一题
+                  </button>
+                )}
+              </div>
             )}
           </section>
         )}

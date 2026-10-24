@@ -204,11 +204,15 @@ export async function installMockAPI(context, options = {}) {
     else if (p.endsWith("/chat"))
       data = { answer: "先看helped的主语，再暂时遮住that从句。" };
     else if (p === "/learning/attempts/attempt1") data = attempt();
+    else if (p === "/learning/english/syntax") data={sessions:[]};
+    else if (p === "/learning/recordings") data={recordings:[]};
+    else if (/\/learning\/english\/listening\/.+\/reflection/.test(p)) data={reflection:null};
     else if (p === "/learning/words/next") {
       round++;
       difficulty = body.difficulty;
       data = {
         id: "r" + round,
+        duration_ms: body.seconds ? body.seconds*1000 : difficulty === "normal" ? 6000 : 3000,
         prompt: "adapt",
         direction: body.direction,
         difficulty,
@@ -219,13 +223,14 @@ export async function installMockAPI(context, options = {}) {
         })),
         server_time: new Date().toISOString(),
         deadline: new Date(
-          Date.now() + (difficulty === "normal" ? 6000 : 3000),
+          Date.now() + (body.seconds ? body.seconds*1000 : difficulty === "normal" ? 6000 : 3000),
         ).toISOString(),
         answered_at: null,
       };
     } else if (p.startsWith("/learning/words/") && p.endsWith("/answer"))
       data = {
         id: "r" + round,
+        duration_ms: body.seconds ? body.seconds*1000 : difficulty === "normal" ? 6000 : 3000,
         prompt: "adapt",
         direction: "en_zh",
         difficulty,
@@ -239,6 +244,8 @@ export async function installMockAPI(context, options = {}) {
         correct: body.picked === "A",
         correct_id: "A",
         picked: body.picked,
+        vocabulary:{word:"adapt",phonetic:"/əˈdæpt/",pos:"v.",chinese:"适应",entry_kind:"word"},
+        rationale:"核对词义",
       };
     else if (p === "/ai/models")
       data = {
@@ -252,7 +259,9 @@ export async function installMockAPI(context, options = {}) {
         voice: "",
         timezone: "Asia/Shanghai",
       };
-    else if (p === "/ai/conversations") data = { conversations: [] };
+    else if (p === "/ai/conversations") data = route.request().method()==="POST" ? {id:"word-chat"} : { conversations: [] };
+    else if(p === "/ai/conversations/word-chat/messages")data={content:"adapt to 表示适应；这是 AI 原创例句。"};
+    else if(p === "/ai/conversations/word-chat")data={messages:[{id:1,role:"assistant",content:"adapt to 表示适应。"}]};
     else if (p === "/ai/training")
       data =
         route.request().method() === "POST"

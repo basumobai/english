@@ -136,7 +136,7 @@ export default function AdminLearning() {
     setClouds(cc.connections.filter(c=>!c.adapter||c.adapter==='webdav'));
   }
   useEffect(() => {
-    if (auth.allowed) {const hash=window.location.hash.slice(1);if(["documents","questions","tasks","words","cloud"].includes(hash))setTab(hash);load().catch((e) => setError(e.message));}
+    if (auth.allowed) {const sense=Number(new URLSearchParams(window.location.search).get("sense_id"));if(Number.isSafeInteger(sense)&&sense>0)setWord(v=>({...v,sense_id:sense}));const hash=window.location.hash.slice(1);if(["documents","questions","tasks","words","cloud"].includes(hash))setTab(hash);load().catch((e) => setError(e.message));}
   }, [auth.allowed]);
   useEffect(() => {
     if (
@@ -807,7 +807,7 @@ export default function AdminLearning() {
             <section className="panel glass">
               <h2>准备极速四选一</h2>
               <p>
-                近似组用于结构校验；选项的语义相似程度和答案唯一性需人工审核。词义编号可在词库查看。
+                近似组用于结构校验；选项的语义相似程度和答案唯一性需人工审核。可从词库直接进入并带上词义编号。选项难度与学生的2/3/6秒计时独立。
               </p>
               <form
                 onSubmit={(e) => {

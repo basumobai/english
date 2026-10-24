@@ -62,9 +62,13 @@ type textbookScope struct {
 	Unit    int
 	Lesson  string
 	Starred *bool
+	Kind    string
 }
 
 func (f textbookScope) validate() error {
+	if f.Kind != "" && f.Kind != "word" && f.Kind != "phrase" {
+		return fmt.Errorf("词条类型无效")
+	}
 	if f.Book != "" && map[string]int{"c1": 1, "c2": 4, "c3": 7, "s1": 1, "s2": 4, "s3": 7, "s4": 10}[f.Book] == 0 {
 		return fmt.Errorf("教材册次无效")
 	}
@@ -81,7 +85,7 @@ func (f textbookScope) validate() error {
 }
 func scopeQuery(r *http.Request) (textbookScope, error) {
 	q := r.URL.Query()
-	f := textbookScope{Book: q.Get("book_id"), Lesson: q.Get("lesson")}
+	f := textbookScope{Book: q.Get("book_id"), Lesson: q.Get("lesson"), Kind: q.Get("entry_kind")}
 	if q.Get("unit") != "" {
 		n, e := strconv.Atoi(q.Get("unit"))
 		if e != nil {
@@ -102,7 +106,7 @@ func scopeQuery(r *http.Request) (textbookScope, error) {
 // An EXISTS filter preserves one candidate per sense even when a word occurs
 // in several lessons. All supplied scope fields must match one occurrence.
 func textbookSenseFilter(first int) string {
-	return fmt.Sprintf(` AND (($%d='' AND $%d=0 AND $%d='' AND $%d::boolean IS NULL) OR EXISTS(SELECT 1 FROM textbook_entries te WHERE te.sense_id=s.id AND ($%d='' OR te.book_id=$%d) AND ($%d=0 OR te.unit=$%d) AND ($%d='' OR te.lesson=$%d) AND ($%d::boolean IS NULL OR te.starred=$%d)))`, first, first+1, first+2, first+3, first, first, first+1, first+1, first+2, first+2, first+3, first+3)
+	return fmt.Sprintf(` AND (($%d='' AND $%d=0 AND $%d='' AND $%d::boolean IS NULL) OR EXISTS(SELECT 1 FROM textbook_entries te WHERE te.sense_id=s.id AND ($%d='' OR te.book_id=$%d) AND ($%d=0 OR te.unit=$%d) AND ($%d='' OR te.lesson=$%d) AND ($%d::boolean IS NULL OR te.starred=$%d)))`, first, first+1, first+2, first+3, first, first, first+1, first+1, first+2, first+2, first+3, first+3) + fmt.Sprintf(` AND ($%d='' OR w.entry_kind=$%d)`, first+4, first+4)
 }
 func (s *server) textbookCatalog(w http.ResponseWriter, r *http.Request) {
 	var raw json.RawMessage

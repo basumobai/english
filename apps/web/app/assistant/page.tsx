@@ -1,4 +1,6 @@
 "use client";
+import { SyntaxLab } from "../components/SyntaxLab";
+import { ListeningReflection } from "../components/ListeningReflection";
 import { AdaptivePanel } from "../components/AdaptivePanel";
 import { useMemo } from "react";
 import { TimelinePlayer } from "../components/TimelinePlayer";
@@ -142,6 +144,8 @@ export default function Assistant() {
     async function restore() {
       try {
         const h = await histories();
+        const requestedConversation=new URLSearchParams(window.location.search).get("conversation");
+        if(requestedConversation){await loadChat(requestedConversation);setTab("chat");return;}
         let saved: { id: string; kind: string } | null = null;
         let job: PendingAI | null = null;
         try {
@@ -402,8 +406,10 @@ export default function Assistant() {
       )}
       {tab === "sentence" && (
         <>
-          <section className="panel glass">
-            <h2>把长句拆开看</h2>
+          <SyntaxLab key={auth.user?.id} modelId={selectedModel?.id || 0} userId={auth.user?.id || ""} />
+          <details className="panel glass sentence-reference">
+            <summary>直接查看 AI 参考分析</summary>
+            <p className="setting-note">需要快速查阅时，也可跳过独立拆句，直接请求原有参考分析。</p>
             <form className="form-stack" onSubmit={generate}>
               <label>
                 英语原句
@@ -426,7 +432,7 @@ export default function Assistant() {
                 {busy ? "正在分析句子…" : "拆解这句话"}
               </button>
             </form>
-          </section>
+          </details>
           {analysis && lesson?.data && (
             <section className="panel glass sentence-analysis">
               <h2 lang="en">{lesson.data.text}</h2>
@@ -671,6 +677,7 @@ export default function Assistant() {
                   </h3>
                   <p lang="en">{lesson.transcript}</p>
                   <p>{lesson.translation}</p>
+                  <ListeningReflection key={lesson.id} trainingId={lesson.id} />
                 </div>
               )}
               <p className="setting-note">

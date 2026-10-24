@@ -145,6 +145,7 @@ for (const level of ["普通", "绝望"]) {
   await page.getByRole("button", { name: "停止连做" }).click();
 }
 await page.goto(base + "/assistant#sentence");
+await page.getByText("直接查看 AI 参考分析",{exact:true}).click();
 await page.getByLabel("英语原句").fill(question.content.passage);
 await page.getByRole("button", { name: "拆解这句话", exact: true }).click();
 await page.locator(".sentence-analysis").waitFor();

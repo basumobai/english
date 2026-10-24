@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { SpeechTranscription } from "./SpeechTranscription";
+import { ListeningReflection } from "./ListeningReflection";
 import { api, requestID } from "../../lib/api";
 import { AudioOutput, useSpeech, useVoice, VoicePicker } from "../speech";
 
@@ -299,9 +301,21 @@ export function GuangdongPractice({
           </a>
         </div>
       )}
+      <SpeechTranscription
+        readOnly={!!lesson.submitted}
+        key={`${lesson.id}-${step}-${recordings[step]?.url || "file"}`}
+        trainingId={lesson.id}
+        taskIndex={step}
+        recordingURL={recordings[step]?.url}
+        onTranscript={(text) =>
+          setResponses((v) => v.map((s, i) => (i === step ? text : s)))
+        }
+      />
+      {lesson.submitted && <ListeningReflection trainingId={lesson.id} />}
       <label>
         我的英文作答／录音转写
         <textarea
+          aria-label="我的英文作答／录音转写"
           rows={5}
           maxLength={4000}
           value={
@@ -326,7 +340,7 @@ export function GuangdongPractice({
         </button>
       )}
       <p className="setting-note">
-        录音仅在当前页面本机回放，离开前可下载。AI只评价填写的文字；语音转写和专业发音评分尚未接入。
+        录音可本机回放、下载，或主动上传并转写。AI评价核对后的文字；专业发音评分尚未接入。
       </p>
       {!lesson.submitted ? (
         <button

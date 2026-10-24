@@ -794,6 +794,7 @@ export default function Practice() {
               <nav className="review-jumps" aria-label="本题复习">
                 <a href="#practice-feedback">查看作答反馈</a>
                 <a href="#practice-explanation">查看动态讲解</a>
+                {attempt?.submitted_at&&<a href={`/assistant?source_attempt=${encodeURIComponent(attempt.id)}#sentence`}>用原文独立拆句 →</a>}
               </nav>
             )}
             <div className="practice-context">

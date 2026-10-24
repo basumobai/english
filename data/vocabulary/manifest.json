@@ -21,7 +21,8 @@
             "Writing Workshop": 12,
             "Reading Club 1": 1,
             "Reading Club 2": 3
-          }
+          },
+          "phrase_entries": 24
         },
         {
           "unit": 2,
@@ -35,7 +36,8 @@
             "Writing Workshop": 10,
             "Reading Club 1": 1,
             "Reading Club 2": 1
-          }
+          },
+          "phrase_entries": 20
         },
         {
           "unit": 3,
@@ -49,9 +51,11 @@
             "Writing Workshop": 11,
             "Reading Club 1": 1,
             "Reading Club 2": 2
-          }
+          },
+          "phrase_entries": 16
         }
-      ]
+      ],
+      "phrase_entries": 60
     },
     {
       "id": "c2",
@@ -73,7 +77,8 @@
             "Writing Workshop": 10,
             "Reading Club 1": 3,
             "Reading Club 2": 1
-          }
+          },
+          "phrase_entries": 7
         },
         {
           "unit": 5,
@@ -87,7 +92,8 @@
             "Writing Workshop": 5,
             "Reading Club 1": 4,
             "Reading Club 2": 2
-          }
+          },
+          "phrase_entries": 5
         },
         {
           "unit": 6,
@@ -101,9 +107,11 @@
             "Writing Workshop": 1,
             "Reading Club 1": 1,
             "Reading Club 2": 2
-          }
+          },
+          "phrase_entries": 12
         }
-      ]
+      ],
+      "phrase_entries": 24
     },
     {
       "id": "c3",
@@ -125,7 +133,8 @@
             "Writing Workshop": 12,
             "Reading Club 1": 7,
             "Reading Club 2": 4
-          }
+          },
+          "phrase_entries": 6
         },
         {
           "unit": 8,
@@ -139,7 +148,8 @@
             "Writing Workshop": 19,
             "Reading Club 1": 4,
             "Reading Club 2": 6
-          }
+          },
+          "phrase_entries": 11
         },
         {
           "unit": 9,
@@ -153,9 +163,11 @@
             "Writing Workshop": 4,
             "Reading Club 1": 2,
             "Reading Club 2": 8
-          }
+          },
+          "phrase_entries": 13
         }
-      ]
+      ],
+      "phrase_entries": 30
     },
     {
       "id": "s1",
@@ -177,7 +189,8 @@
             "Writing Workshop": 14,
             "Reading Club 1": 3,
             "Reading Club 2": 6
-          }
+          },
+          "phrase_entries": 12
         },
         {
           "unit": 2,
@@ -191,7 +204,8 @@
             "Writing Workshop": 9,
             "Reading Club 1": 5,
             "Reading Club 2": 11
-          }
+          },
+          "phrase_entries": 9
         },
         {
           "unit": 3,
@@ -205,9 +219,11 @@
             "Writing Workshop": 15,
             "Reading Club 1": 8,
             "Reading Club 2": 4
-          }
+          },
+          "phrase_entries": 12
         }
-      ]
+      ],
+      "phrase_entries": 33
     },
     {
       "id": "s2",
@@ -229,7 +245,8 @@
             "Writing Workshop": 3,
             "Reading Club 1": 2,
             "Reading Club 2": 4
-          }
+          },
+          "phrase_entries": 6
         },
         {
           "unit": 5,
@@ -243,7 +260,8 @@
             "Writing Workshop": 8,
             "Reading Club 1": 1,
             "Reading Club 2": 3
-          }
+          },
+          "phrase_entries": 2
         },
         {
           "unit": 6,
@@ -256,9 +274,11 @@
             "Lesson 3": 26,
             "Writing Workshop": 19,
             "Reading Club 2": 1
-          }
+          },
+          "phrase_entries": 3
         }
-      ]
+      ],
+      "phrase_entries": 11
     },
     {
       "id": "s3",
@@ -280,7 +300,8 @@
             "Writing Workshop": 8,
             "Reading Club 1": 2,
             "Reading Club 2": 2
-          }
+          },
+          "phrase_entries": 3
         },
         {
           "unit": 8,
@@ -294,7 +315,8 @@
             "Writing Workshop": 5,
             "Reading Club 1": 2,
             "Reading Club 2": 5
-          }
+          },
+          "phrase_entries": 1
         },
         {
           "unit": 9,
@@ -308,9 +330,11 @@
             "Writing Workshop": 4,
             "Reading Club 1": 4,
             "Reading Club 2": 4
-          }
+          },
+          "phrase_entries": 1
         }
-      ]
+      ],
+      "phrase_entries": 5
     },
     {
       "id": "s4",
@@ -332,7 +356,8 @@
             "Writing Workshop": 1,
             "Reading Club 1": 3,
             "Reading Club 2": 6
-          }
+          },
+          "phrase_entries": 2
         },
         {
           "unit": 11,
@@ -346,7 +371,8 @@
             "Writing Workshop": 13,
             "Reading Club 1": 3,
             "Reading Club 2": 6
-          }
+          },
+          "phrase_entries": 1
         },
         {
           "unit": 12,
@@ -360,11 +386,14 @@
             "Writing Workshop": 6,
             "Reading Club 1": 4,
             "Reading Club 2": 7
-          }
+          },
+          "phrase_entries": 1
         }
-      ]
+      ],
+      "phrase_entries": 4
     }
   ],
   "total_entries": 2137,
-  "note": "条目为词、短语和教材缩写；保留各册出现位置，不按词头跨册去重。音标或词性为空表示教材未单列，不用机器编造。source_page=0表示仅见于有出处的网络索引，供区分印次差异。"
+  "note": "条目为词、短语和教材缩写；保留各册出现位置，不按词头跨册去重。音标或词性为空表示教材未单列，不用机器编造。source_page=0表示仅见于有出处的网络索引，供区分印次差异。",
+  "total_phrase_entries": 167
 }

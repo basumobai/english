@@ -1,13 +1,30 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { WordTutor } from "../components/WordTutor";
 import { api } from "../../lib/api";
 import { useProtected, Loading, Navigation } from "../providers";
 import { Icon } from "../icons";
-import {TextbookScopeSelector, allTextbooks, textbookQuery} from "../components/TextbookScopeSelector";
-type Location = {book_id:string;book_title:string;unit:number;unit_title:string;lesson:string;starred:boolean;phonetic:string;pos:string;chinese:string;source_url:string};
+import {
+  TextbookScopeSelector,
+  allTextbooks,
+  textbookQuery,
+} from "../components/TextbookScopeSelector";
+type Location = {
+  book_id: string;
+  book_title: string;
+  unit: number;
+  unit_title: string;
+  lesson: string;
+  starred: boolean;
+  phonetic: string;
+  pos: string;
+  chinese: string;
+  source_url: string;
+};
 type Entry = {
   locations?: Location[];
+  entry_kind?: string;
   id: number;
   word: string;
   phonetic: string;
@@ -18,8 +35,9 @@ type Entry = {
 };
 export default function Vocabulary() {
   const auth = useProtected();
-  const [scope,setScope] = useState(allTextbooks);
-  const version=useRef(0);
+  const [openTutor, setOpenTutor] = useState<number | null>(null);
+  const [scope, setScope] = useState(allTextbooks);
+  const version = useRef(0);
   const [entries, setEntries] = useState<Entry[]>([]);
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState("");
@@ -27,24 +45,26 @@ export default function Vocabulary() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   async function load() {
-    const current=++version.current;
+    const current = ++version.current;
     setBusy(true);
     try {
       const d = await api<{ entries: Entry[] }>(
         `/vocabulary?q=${encodeURIComponent(search)}&page=${page}&${textbookQuery(scope)}`,
       );
-      if(current!==version.current)return;
+      if (current !== version.current) return;
       setEntries(d.entries);
       setError("");
     } catch (e) {
-      if(current===version.current)setError((e as Error).message);
+      if (current === version.current) setError((e as Error).message);
     } finally {
-      if(current===version.current)setBusy(false);
+      if (current === version.current) setBusy(false);
     }
   }
   useEffect(() => {
     if (auth.allowed) load();
-      return ()=>{version.current++};
+    return () => {
+      version.current++;
+    };
   }, [auth.allowed, search, page, scope]);
   async function suspend(entry: Entry) {
     setBusy(true);
@@ -69,7 +89,13 @@ export default function Vocabulary() {
         <p>反复忘记的词先停一下，理解之后再恢复。暂停仅影响你的新一轮练习。</p>
       </section>
       <section className="panel glass">
-        <TextbookScopeSelector value={scope} onChange={v=>{setScope(v);setPage(1)}} />
+        <TextbookScopeSelector
+          value={scope}
+          onChange={(v) => {
+            setScope(v);
+            setPage(1);
+          }}
+        />
         <form
           className="search-form"
           onSubmit={(e) => {
@@ -79,13 +105,13 @@ export default function Vocabulary() {
           }}
         >
           <label className="sr-only" htmlFor="word-search">
-            搜索单词或中文
+            搜索单词、短语或中文
           </label>
           <input
             id="word-search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="搜索单词或中文释义"
+            placeholder="搜索单词、短语或中文释义"
             maxLength={100}
           />
           <button className="primary" disabled={busy}>
@@ -107,13 +133,53 @@ export default function Vocabulary() {
                 <h2 lang="en">
                   {entry.word} <small>{entry.phonetic}</small>
                   {auth.user?.role === "admin" && (
-                    <small> · 词义 #{entry.id}</small>
+                    <small>
+                      {" "}
+                      · 词义 #{entry.id} ·{" "}
+                      <Link href={`/admin/learning?sense_id=${entry.id}#words`}>
+                        准备快速选项
+                      </Link>
+                    </small>
                   )}
                 </h2>
                 <p>
-                  {entry.pos} · {entry.chinese}
+                  {entry.entry_kind === "phrase" && (
+                    <small>短语 / 搭配 · </small>
+                  )}
+                  {entry.pos && `${entry.pos} · `}
+                  {entry.chinese}
                 </p>
-                {entry.locations?.filter(l=>(!scope.book_id||l.book_id===scope.book_id)&&(!scope.unit||l.unit===scope.unit)&&(!scope.lesson||l.lesson===scope.lesson)&&(scope.starred===""||l.starred===(scope.starred==="true"))).map((l,i)=><p className="textbook-location" key={`${l.book_id}-${l.unit}-${l.lesson}-${i}`}>{l.starred&&<strong aria-label="星号词">* </strong>}{l.book_title} · Unit {l.unit} {l.unit_title} · {l.lesson}{l.phonetic&&l.phonetic!==entry.phonetic&&<> · {l.phonetic}</>}</p>)}
+                {entry.locations
+                  ?.filter(
+                    (l) =>
+                      (!scope.book_id || l.book_id === scope.book_id) &&
+                      (!scope.unit || l.unit === scope.unit) &&
+                      (!scope.lesson || l.lesson === scope.lesson) &&
+                      (scope.starred === "" ||
+                        l.starred === (scope.starred === "true")),
+                  )
+                  .map((l, i) => (
+                    <p
+                      className="textbook-location"
+                      key={`${l.book_id}-${l.unit}-${l.lesson}-${i}`}
+                    >
+                      {l.starred && <strong aria-label="星号词">* </strong>}
+                      {l.book_title} · Unit {l.unit} {l.unit_title} · {l.lesson}
+                      {l.phonetic && l.phonetic !== entry.phonetic && (
+                        <> · {l.phonetic}</>
+                      )}
+                    </p>
+                  ))}
+                <details
+                  onToggle={(e) => {
+                    if (e.currentTarget.open) setOpenTutor(entry.id);
+                  }}
+                >
+                  <summary>AI 理解用法</summary>
+                  {openTutor === entry.id && (
+                    <WordTutor key={entry.id} word={entry} />
+                  )}
+                </details>
                 <span className="word-status">
                   {entry.suspended ? "已暂停" : "参与学习"}
                 </span>
@@ -147,7 +213,7 @@ export default function Vocabulary() {
                 ? "你的词汇正在路上。"
                 : search
                   ? "试试其他英文单词或中文释义。"
-                  : "教材词汇由管理员导入，导入后就可以开始学习。"}
+                  : "当前筛选没有词条，可以放宽课节、星号或词条类型。"}
             </p>
           </div>
         )}

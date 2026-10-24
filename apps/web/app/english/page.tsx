@@ -411,7 +411,7 @@ export default function Home() {
               <small>个</small>
             </strong>
             <span className="stat-note">
-              词库共 {dashboard.demo_words} 个单词
+              词库共 {dashboard.demo_words} 个词条（含短语）
             </span>
           </div>
         </div>
@@ -617,9 +617,9 @@ export default function Home() {
                 {reviewing
                   ? "先核对答案，再告诉自己：这一次真的记住了吗？"
                   : current.type === "listening_spelling"
-                    ? "先听发音，再写出英文单词；可以重复播放。"
+                    ? "先听发音，再写出英文单词或短语；可以重复播放。"
                     : current.type === "spelling"
-                      ? "根据中文写出英文单词"
+                      ? "根据中文写出英文单词或短语"
                       : current.type === "recognition"
                         ? "选择最合适的中文释义"
                         : "主动写出中文意思"}

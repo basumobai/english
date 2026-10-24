@@ -4113,3 +4113,29 @@ body:has(.figure-dialog[open]) {
 .textbook-filters select { width:100%; min-width:0; }
 .textbook-location { font-size:.8rem; opacity:.78; overflow-wrap:anywhere; }
 @media(max-width:600px) { .textbook-filters {grid-template-columns:1fr;} }
+
+/* Independent English attempts and deliberate feedback. */
+.syntax-tokens { display:flex; flex-wrap:wrap; gap:.4rem; margin:1rem 0; }
+.syntax-tokens button { min-height:44px; max-width:100%; overflow-wrap:anywhere; }
+.syntax-tokens .marked-token { background:var(--accent-soft, #e2eeff); color:#17325d; }
+.syntax-tokens button[aria-pressed="true"] { outline:3px solid #3879c7; }
+.syntax-lab textarea,.word-tutor select { width:100%; }
+.syntax-lab .button-row { display:flex; flex-wrap:wrap; gap:.7rem; }
+.syntax-lab .evidence-card { padding:1rem; border-left:3px solid #4b8bce; margin:.8rem 0; }
+.word-tutor { margin:1rem 0; padding-top:.8rem; border-top:1px solid var(--line, #a1acbc66); }
+.word-tutor .ai-explanation { white-space:pre-wrap; overflow-wrap:anywhere; }
+.word-tutor h3 { font-size:1rem; }
+.challenge-settings fieldset.textbook-scope { margin-bottom:1rem; }
+
+.subject-grid:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
+.syntax-lab button:not(.primary),.word-tutor button,.speech-transcription button,.listening-reflection button {
+  appearance:none; font:inherit; border:1px solid var(--control-line); border-radius:12px;
+  background:var(--surface); color:var(--ink); padding:9px 12px; min-height:44px;
+  cursor:pointer; max-width:100%; overflow-wrap:anywhere; margin:0 .3rem .4rem 0;
+}
+.syntax-lab button:disabled,.word-tutor button:disabled,.speech-transcription button:disabled {opacity:.55;cursor:default}
+.syntax-lab .history-list {display:grid;gap:.5rem;margin:1rem 0}
+.syntax-lab .syntax-tokens .marked-token {background:var(--selection);color:var(--ink)}
+.speech-transcription audio {display:block;max-width:100%;width:100%;margin:.8rem 0}
+.speech-transcription .ai-explanation {white-space:pre-wrap;overflow-wrap:anywhere}
+.sentence-reference>summary {font-weight:600;cursor:pointer;min-height:44px;padding:.5rem 0}

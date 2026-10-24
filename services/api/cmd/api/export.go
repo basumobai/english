@@ -7,7 +7,7 @@ import (
 
 func (s *server) exportAccount(w http.ResponseWriter, r *http.Request) {
 	var raw json.RawMessage
-	err := s.db.QueryRowContext(r.Context(), `SELECT jsonb_build_object('schema_version',1,'exported_at',now(),
+	err := s.db.QueryRowContext(r.Context(), `SELECT jsonb_build_object('schema_version',2,'exported_at',now(),
  'profile',(SELECT jsonb_build_object('username',username,'display_name',display_name) FROM users WHERE id=$1),
  'preferences',(SELECT to_jsonb(p)-'user_id' FROM user_preferences p WHERE user_id=$1),
  'reviews',COALESCE((SELECT jsonb_agg(to_jsonb(rs)-'user_id') FROM review_states rs WHERE user_id=$1),'[]'),
@@ -17,6 +17,11 @@ func (s *server) exportAccount(w http.ResponseWriter, r *http.Request) {
  'questions',COALESCE((SELECT jsonb_agg(to_jsonb(q)) FROM study_questions q JOIN study_sessions ss ON ss.id=q.session_id WHERE ss.user_id=$1),'[]'),
  'study_sessions',COALESCE((SELECT jsonb_agg(to_jsonb(ss)-'user_id') FROM study_sessions ss WHERE ss.user_id=$1),'[]'),
  'conversations',COALESCE((SELECT jsonb_agg(jsonb_build_object('id',c.id,'title',c.title,'created_at',c.created_at,'messages',COALESCE((SELECT jsonb_agg(to_jsonb(m) ORDER BY m.id) FROM ai_messages m WHERE m.conversation_id=c.id),'[]'))) FROM ai_conversations c WHERE c.user_id=$1),'[]'),
+ 'syntax_sessions',COALESCE((SELECT jsonb_agg(to_jsonb(s)-'user_id'-'digest') FROM learning_syntax_sessions s WHERE user_id=$1),'[]'),
+ 'syntax_attempts',COALESCE((SELECT jsonb_agg(to_jsonb(a)-'user_id'-'digest') FROM learning_syntax_attempts a WHERE user_id=$1),'[]'),
+ 'listening_reflections',COALESCE((SELECT jsonb_agg(to_jsonb(f)-'user_id'-'digest') FROM learning_listening_reflections f WHERE user_id=$1),'[]'),
+ 'recordings',COALESCE((SELECT jsonb_agg(jsonb_build_object('id',id,'training_id',training_id,'task_index',task_index,'mime',mime,'created_at',created_at)) FROM learning_recordings r WHERE user_id=$1),'[]'),
+ 'transcriptions',COALESCE((SELECT jsonb_agg(to_jsonb(t)-'user_id'-'digest') FROM learning_transcriptions t WHERE user_id=$1),'[]'),
  'training',COALESCE((SELECT jsonb_agg(CASE WHEN t.kind='listening' AND t.answers IS NULL THEN jsonb_build_object('id',t.id,'kind',t.kind,'title',t.title,'created_at',t.created_at,'status','unanswered') ELSE to_jsonb(t)-'user_id' END) FROM training_sessions t WHERE t.user_id=$1),'[]'))`, userID(r.Context())).Scan(&raw)
 	if err != nil {
 		s.dbError(w, "account export", err)

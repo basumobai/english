@@ -87,7 +87,7 @@ func (s *server) createSession(w http.ResponseWriter, r *http.Request) {
 		fail(w, 400, err.Error())
 		return
 	}
-	scope := textbookScope{Book: options.BookID, Unit: options.Unit, Lesson: options.Lesson, Starred: options.Starred}
+	scope := textbookScope{Book: options.BookID, Unit: options.Unit, Lesson: options.Lesson, Starred: options.Starred, Kind: options.EntryKind}
 	if err := scope.validate(); err != nil {
 		fail(w, 400, err.Error())
 		return
@@ -141,7 +141,7 @@ func (s *server) createSession(w http.ResponseWriter, r *http.Request) {
  CROSS JOIN jsonb_array_elements_text($2::jsonb) AS k(kind)
  LEFT JOIN review_states rs ON rs.user_id=$1 AND rs.sense_id=s.id AND rs.dimension=k.kind
  WHERE NOT EXISTS(SELECT 1 FROM suspended_senses x WHERE x.user_id=$1 AND x.sense_id=s.id)`+textbookSenseFilter(5)+` AND ($3='practice' OR ((rs.next_review_at IS NULL OR rs.next_review_at<=now()) AND `+siblingFilter+`))
- ORDER BY rs.next_review_at ASC NULLS LAST,random() LIMIT 3000`, userID(ctx), string(typeJSON), options.Mode, prefs.Timezone, scope.Book, scope.Unit, scope.Lesson, scope.Starred)
+ ORDER BY rs.next_review_at ASC NULLS LAST,random() LIMIT 3000`, userID(ctx), string(typeJSON), options.Mode, prefs.Timezone, scope.Book, scope.Unit, scope.Lesson, scope.Starred, scope.Kind)
 	if err != nil {
 		s.dbError(w, "queue candidates", err)
 		return
